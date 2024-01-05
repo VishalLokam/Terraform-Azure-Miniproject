@@ -6,7 +6,8 @@ This repo contains the code for provisioning a new VM in Microsoft Azure using T
 If you don't have an account then signup go for free using the [Signup to Microsoft Azure](https://azure.microsoft.com/en-in/free/open-source) link
 
 - Azure CLI on your host machine  
-Azure CLI is a set of commands used to create and manage Azure resources. Install Azure CLI using the [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) link  
+Azure CLI is a set of commands used to create and manage Azure resources.
+Install Azure CLI using the [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) link  
 
 - Terraform on your host machine  
 Terrform is an Infrastructure as Code (IaC) tool used for provisioning resources on the cloud.  
