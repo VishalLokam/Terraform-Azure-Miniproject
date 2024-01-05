@@ -11,10 +11,16 @@ resource "azapi_resource_action" "ssh_public_key_gen" {
   action      = "generateKeyPair"
   method      = "POST"
 
-  response_export_values = ["publicKey", "privateKet"]
+  response_export_values = ["publicKey", "privateKey"]
 }
 
-output "key_data" {
+output "public_key_data" {
   value = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
+}
 
+
+resource "local_sensitive_file" "private_key" {
+  content  = jsondecode(azapi_resource_action.ssh_public_key_gen.output).privateKey
+  filename = "private_ssh_key_azure"
+  file_permission = 600
 }
