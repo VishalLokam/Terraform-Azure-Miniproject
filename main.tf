@@ -68,50 +68,18 @@ resource "azurerm_network_security_rule" "dev_nsg_1_rule-1" {
   destination_address_prefix  = "*"
 }
 
-# Create a public ip prefix to reserver 4 public ip addresses for the VMs
-resource "azurerm_public_ip_prefix" "dev_public_ip_prefix_1" {
-  name                = "${var.location}_public_ip_prefix"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.dev_resource_group.name
-
-  prefix_length = 31
-
-  timeouts {
-    delete = "1m"
-  }
-
-}
-
-# Create a new public ip(1)
+# Create a new public ip
 resource "azurerm_public_ip" "dev_public_ip_1" {
   name                = "${var.location}_public_ip_1"
   location            = var.location
-  sku                 = "Standard"
   resource_group_name = azurerm_resource_group.dev_resource_group.name
-  allocation_method   = "Static"
-  public_ip_prefix_id = azurerm_public_ip_prefix.dev_public_ip_prefix_1.id
-
-  depends_on = [azurerm_public_ip_prefix.dev_public_ip_prefix_1]
-}
-
-# Create a new public ip(2)
-resource "azurerm_public_ip" "dev_public_ip_2" {
-  name                = "${var.location}_public_ip_2"
-  location            = var.location
-  sku                 = "Standard"
-  resource_group_name = azurerm_resource_group.dev_resource_group.name
-  allocation_method   = "Static"
-  public_ip_prefix_id = azurerm_public_ip_prefix.dev_public_ip_prefix_1.id
-
-  depends_on = [azurerm_public_ip_prefix.dev_public_ip_prefix_1]
+  allocation_method   = "Dynamic"
 }
 
 
-
-# Create 2 new NIC
+# Create a new Network Interface(NIC)
 resource "azurerm_network_interface" "dev_nics_1" {
-  count               = 2
-  name                = "${var.prefix}_dev_nic_${count.index}"
+  name                = "${var.prefix}_dev_nic_1"
   location            = var.location
   resource_group_name = azurerm_resource_group.dev_resource_group.name
 
@@ -120,31 +88,25 @@ resource "azurerm_network_interface" "dev_nics_1" {
     name                          = "nic_config"
     subnet_id                     = azurerm_subnet.dev_subnet_1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = count.index == 0 ? azurerm_public_ip.dev_public_ip_1.id : azurerm_public_ip.dev_public_ip_2.id
-  }
-
-  timeouts {
-    delete = "2m"
+    public_ip_address_id          = azurerm_public_ip.dev_public_ip_1.id 
   }
 
 }
 
 
 
-# Create 3 new virtual machines
+# Create a new virtual machines
 resource "azurerm_linux_virtual_machine" "dev_vm_1" {
-  count                 = 2
-  name                  = "${var.prefix}_tf_az_vm_${count.index}"
-  computer_name         = "devlinuxvm${count.index}"
+  name                  = "${var.prefix}_tf_az_vm_1"
+  computer_name         = "devlinuxvm"
   location              = var.location
   resource_group_name   = azurerm_resource_group.dev_resource_group.name
-  availability_set_id   = azurerm_availability_set.dev_availability_set_1.id
-  network_interface_ids = [azurerm_network_interface.dev_nics_1[count.index].id]
+  network_interface_ids = [azurerm_network_interface.dev_nics_1.id]
   admin_username        = var.username
   size                  = "Standard_B1s"
 
   os_disk {
-    name                 = "devvmosdisk${count.index}"
+    name                 = "devvmosdisk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
@@ -163,11 +125,7 @@ resource "azurerm_linux_virtual_machine" "dev_vm_1" {
 
 }
 
-# Create a new Availability Set
-resource "azurerm_availability_set" "dev_availability_set_1" {
-  name                         = "${var.prefix}_availability_set_1"
-  location                     = var.location
-  resource_group_name          = azurerm_resource_group.dev_resource_group.name
-  platform_fault_domain_count  = 3
-  platform_update_domain_count = 3
+output "vm_public_ip" {
+  value = azurerm_linux_virtual_machine.dev_vm_1.public_ip_address
 }
+
