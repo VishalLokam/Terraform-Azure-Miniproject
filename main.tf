@@ -88,7 +88,7 @@ resource "azurerm_network_interface" "dev_nics_1" {
     name                          = "nic_config"
     subnet_id                     = azurerm_subnet.dev_subnet_1.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.dev_public_ip_1.id 
+    public_ip_address_id          = azurerm_public_ip.dev_public_ip_1.id
   }
 
 }
