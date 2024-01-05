@@ -6,7 +6,8 @@ This repo contains the code for provisioning a new VM in Microsoft Azure using T
 If you don't have an account then signup go for free using the [Signup to Microsoft Azure](https://azure.microsoft.com/en-in/free/open-source) link
 
 - Azure CLI on your host machine  
-Azure CLI is a set of commands used to create and manage Azure resources. Install Azure CLI using the [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) link  
+Azure CLI is a set of commands used to create and manage Azure resources.
+Install Azure CLI using the [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) link  
 
 - Terraform on your host machine  
 Terrform is an Infrastructure as Code (IaC) tool used for provisioning resources on the cloud.  
@@ -52,10 +53,11 @@ Open the terminal and run the below set of command
 
 - Get the public IP address assigned to the VM  
     `terraform output vm_public_ip`
+  Take a note of this Ip address. It will be use full in the next step
 
 - Connect to the VM using SSH  
     Run the below command  
-    `ssh -i "private_ssh_key_azure.pem" azureadmin@4.247.155.209`  
+    `ssh -i "private_ssh_key_azure.pem" azureadmin@<ip_noted_earlier>`  
     Type *yes* when prompted. You will be logged into the remote VM provisoned on the Microsoft Azure.
 
 __5. Cleanup__  
