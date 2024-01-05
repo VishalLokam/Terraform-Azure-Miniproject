@@ -59,8 +59,7 @@ Open the terminal and run the below set of command
  > [!WARNING]  
   > Private key created after executing the terraform script doesn't work out of the box when trying to SSH into the VM on Windows host.  
   > - One workaround that works is to run __bash__ terminal from VS code and then execute commands in it or atleast the SSH command.  
-  > - Or change the file permissions manually from _Windows Explorer_. For more info Checkout the first solution [Windows SSH: Permissions for 'private-key' are too open] 
-  (https://superuser.com/questions/1296024/windows-ssh-permissions-for-private-key-are-too-open)
+  > - Or change the file permissions manually from _Windows Explorer_. For more info Checkout the first solution [Windows SSH: Permissions for 'private-key' are too open](https://superuser.com/questions/1296024/windows-ssh-permissions-for-private-key-are-too-open)
   > - No issue if executing on a Linux host or using a terminal like [Hyper](https://hyper.is/)
 - Connect to the VM using SSH 
     Run the below command  
